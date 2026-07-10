@@ -175,7 +175,7 @@
             const lastInputTime = ref(0);
 
             const scanBuffer = ref('');
-            window.testBarcode = handleSearchEnter;
+            
             const allMedicines = ref([]);
             const barcodeIndex = new Map();
             const recentSales = ref([]);
@@ -677,44 +677,7 @@
             search.value = '';
         
         }
-            function handleSearchInput(event) {
 
-                const now = Date.now();
-            
-                const diff =
-                    now - lastInputTime.value;
-            
-                lastInputTime.value = now;
-            
-                scanBuffer.value =
-                    event.target.value;
-            
-            }
-            function handleSearchEnter() {
-                console.log("ENTER PRESSED");
-                console.log(scanBuffer.value);
-                const value =
-                    scanBuffer.value.trim();
-            
-                if (!value)
-                    return;
-            
-                const medicine =
-                    findMedicineByBarcode(value);
-            
-                if (medicine) {
-            
-                    processBarcode(value);
-            
-                    scanBuffer.value = '';
-            
-                    search.value = '';
-            
-                    return;
-            
-                }
-            
-            }
             onMounted(() => {
                 initApp();
                 window.addEventListener('keydown', handleKeydown);
