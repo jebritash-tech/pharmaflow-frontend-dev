@@ -1,5 +1,5 @@
 const CACHE_NAME =
-    'pharmaflow-v1.1.0';
+    'pharmaflow-dev-v1';
 
 const BASE =
     '/pharmaflow-frontend-1.1.0-beta';
