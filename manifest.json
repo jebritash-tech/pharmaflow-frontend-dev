@@ -1,6 +1,6 @@
 {
-    "name": "PharmaFlow",
-    "short_name": "PharmaFlow",
+    "name": "PharmaFlow DEV",
+    "short_name": "PF DEV",
     "description": "نظام إدارة الصيدليات",
     "start_url": "/pharmaflow-frontend-1.1.0-beta/login.html",
     "scope": "/pharmaflow-frontend-1.1.0-beta/",
