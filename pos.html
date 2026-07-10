@@ -82,6 +82,8 @@
         <main class="flex-1 flex flex-col gap-6 relative">
             <div class="relative">
                 <input type="text" v-model="search" placeholder="ابحث عن دواء بالاسم أو الباركود..." 
+                    @keydown.enter.prevent="handleSearchEnter"
+                    @input="handleSearchInput"
                        class="w-full p-4 rounded-full border-2 border-emerald-500 shadow-lg outline-none text-center text-lg">
                 <div v-if="search && filteredMedicines.length > 0" class="absolute z-50 w-full bg-white border mt-2 rounded-xl shadow-2xl max-h-80 overflow-y-auto">
                     <div v-for="med in filteredMedicines" 
@@ -170,7 +172,9 @@
     const { createApp, ref, computed, onMounted } = Vue;
     createApp({
         setup() {
-            
+            const lastInputTime = ref(0);
+
+            const scanBuffer = ref('');
             const allMedicines = ref([]);
             const barcodeIndex = new Map();
             const recentSales = ref([]);
@@ -367,11 +371,11 @@
                             }
                         
                         });
-                        console.log(barcodeIndex);
-                        console.log(
-                            findMedicineByBarcode("100000000")
-                        );
-                        processBarcode("100000000");
+                        // console.log(barcodeIndex);
+                        // console.log(
+                        //     findMedicineByBarcode("100000000")
+                        // );
+                        // processBarcode("100000000");
 
                         usingCachedMedicines.value =
                             false;
@@ -675,7 +679,44 @@
             search.value = '';
         
         }
-            return { search, cart, recentSales,findMedicineByBarcode,processBarcode, cartTotal, filteredMedicines,offlineSalesCount,logout,
+            function handleSearchInput(event) {
+
+                const now = Date.now();
+            
+                const diff =
+                    now - lastInputTime.value;
+            
+                lastInputTime.value = now;
+            
+                scanBuffer.value =
+                    event.target.value;
+            
+            }
+            function handleSearchEnter() {
+
+                const value =
+                    scanBuffer.value.trim();
+            
+                if (!value)
+                    return;
+            
+                const medicine =
+                    findMedicineByBarcode(value);
+            
+                if (medicine) {
+            
+                    processBarcode(value);
+            
+                    scanBuffer.value = '';
+            
+                    search.value = '';
+            
+                    return;
+            
+                }
+            
+            }
+            return { search, cart, recentSales,findMedicineByBarcode,processBarcode,handleSearchInput,handleSearchEnter, cartTotal, filteredMedicines,offlineSalesCount,logout,
             isOnline, addToCart, checkout, currentUser, refundModal, showRefundModal, processRefund,clearCart, updateQuantity, removeFromCart };
         }
     }).mount('#app');
