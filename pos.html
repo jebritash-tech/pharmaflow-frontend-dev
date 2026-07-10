@@ -175,7 +175,11 @@
             const lastInputTime = ref(0);
 
             const scanBuffer = ref('');
+            const barcodeBuffer = ref('');
             
+            let barcodeTimer = null;
+            
+            let lastKeyTime = 0;
             const allMedicines = ref([]);
             const barcodeIndex = new Map();
             const recentSales = ref([]);
@@ -189,8 +193,95 @@
             const filteredMedicines = computed(() => search.value ? allMedicines.value.filter(m => m.name.toLowerCase().includes(search.value.toLowerCase())) : []);
             const refundModal = ref({ show: false, sale: null, reason: '' });
             const usingCachedMedicines = ref(false);
-            // Start Dexie //
+            // Start Global Scanner
+            function processScannedBarcode(barcode) {
+            
+                barcode = barcode.trim();
+            
+                if (!barcode)
+                    return;
+            
+                const medicine =
+                    findMedicineByBarcode(barcode);
+            
+                if (!medicine) {
+            
+                    console.log(
+                        'Barcode Not Found:',
+                        barcode
+                    );
+            
+                    return;
+            
+                }
+            
+                addToCart(medicine);
+            
+                console.log(
+                    'Scanned:',
+                    medicine.name
+                );
+            
+            }
 
+            const handleBarcodeScanner = (event) => {
+            
+                const active =
+                    document.activeElement;
+            
+                // لا يعمل أثناء الكتابة في textarea
+            
+                if (
+                    active &&
+                    active.tagName === 'TEXTAREA'
+                ) {
+                    return;
+                }
+            
+                const now = Date.now();
+            
+                // إذا كانت المدة طويلة نبدأ قراءة جديدة
+            
+                if (
+                    now - lastKeyTime > 100
+                ) {
+            
+                    barcodeBuffer.value = '';
+            
+                }
+            
+                lastKeyTime = now;
+            
+                if (event.key === 'Enter') {
+            
+                    if (
+                        barcodeBuffer.value.length >= 6
+                    ) {
+            
+                        processScannedBarcode(
+                            barcodeBuffer.value
+                        );
+            
+                    }
+            
+                    barcodeBuffer.value = '';
+            
+                    return;
+                }
+            
+                if (
+                    event.key.length === 1
+                ) {
+            
+                    barcodeBuffer.value +=
+                        event.key;
+            
+                };
+            
+            };
+
+            // End Global Scanner
+            // Start Dexie //
             const refreshOfflineCount = async () => {
                 offlineSalesCount.value =
                     await countPendingSales();
@@ -681,6 +772,16 @@
             onMounted(() => {
                 initApp();
                 window.addEventListener('keydown', handleKeydown);
+                window.addEventListener(
+                    'keydown',
+                    handleBarcodeScanner
+                );
+            });
+            onUnmounted(() => {
+                window.removeEventListener(
+                    'keydown',
+                    handleBarcodeScanner
+                );
             });
             return { search, cart, recentSales,findMedicineByBarcode,processBarcode,handleSearchInput,handleSearchEnter, cartTotal, filteredMedicines,offlineSalesCount,logout,
             isOnline, addToCart, checkout, currentUser, refundModal, showRefundModal, processRefund,clearCart, updateQuantity, removeFromCart };
