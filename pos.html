@@ -712,9 +712,21 @@
                     }
                 }
                 // Enter: إتمام الدفع (Checkout)
-                else if (event.key === 'Enter') {
-                    event.preventDefault();
-                    checkout();
+                else if (
+                    event.key === 'Enter'
+                ) {
+                
+                    if (
+                        document.activeElement ===
+                        document.body
+                    ) {
+                
+                        event.preventDefault();
+                
+                        checkout();
+                
+                    }
+                
                 }
                 // Backspace: إفراغ السلة
                 else if (event.key === 'Backspace') {
