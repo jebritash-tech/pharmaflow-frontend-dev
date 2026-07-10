@@ -798,19 +798,11 @@
             onMounted(() => {
                 initApp();
                 window.addEventListener('keydown', handleKeydown);
-                window.addEventListener(
-                    'keydown',
-                    handleBarcodeScanner
-                );
+               
                 focusSearch();
             });
-            onUnmounted(() => {
-                window.removeEventListener(
-                    'keydown',
-                    handleBarcodeScanner
-                );
-            });
-            return { search, cart, recentSales,findMedicineByBarcode,processBarcode, cartTotal, filteredMedicines,offlineSalesCount,logout,
+            
+            return { search, cart, recentSales,findMedicineByBarcode,focusSearch,processBarcode, cartTotal, filteredMedicines,offlineSalesCount,logout,
             isOnline, addToCart, checkout, currentUser, refundModal, showRefundModal, processRefund,clearCart, updateQuantity, removeFromCart };
         }
     }).mount('#app');
