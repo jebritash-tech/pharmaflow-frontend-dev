@@ -174,10 +174,11 @@
             const lastInputTime = ref(0);
 
             const scanBuffer = ref('');
-            const barcodeBuffer = ref('');
+            
             
             let barcodeTimer = null;
-            
+            const barcodeBuffer = ref('');
+            let barcodeTimeout = null;
             let lastKeyTime = 0;
             const allMedicines = ref([]);
             const barcodeIndex = new Map();
@@ -193,92 +194,7 @@
             const refundModal = ref({ show: false, sale: null, reason: '' });
             const usingCachedMedicines = ref(false);
             // Start Global Scanner
-            function processScannedBarcode(barcode) {
             
-                barcode = barcode.trim();
-            
-                if (!barcode)
-                    return;
-            
-                const medicine =
-                    findMedicineByBarcode(barcode);
-            
-                if (!medicine) {
-            
-                    console.log(
-                        'Barcode Not Found:',
-                        barcode
-                    );
-            
-                    return;
-            
-                }
-            
-                addToCart(medicine);
-            
-                console.log(
-                    'Scanned:',
-                    medicine.name
-                );
-            
-            }
-
-            const handleBarcodeScanner = (event) => {
-            
-                const active =
-                    document.activeElement;
-            
-                // لا يعمل أثناء الكتابة في textarea
-            
-                if (
-                    active &&
-                    active.tagName === 'TEXTAREA'
-                ) {
-                    return;
-                }
-            
-                const now = Date.now();
-            
-                // إذا كانت المدة طويلة نبدأ قراءة جديدة
-            
-                if (
-                    now - lastKeyTime > 100
-                ) {
-            
-                    barcodeBuffer.value = '';
-            
-                }
-            
-                lastKeyTime = now;
-            
-                if (event.key === 'Enter') {
-            
-                    if (
-                        barcodeBuffer.value.length >= 6
-                    ) {
-            
-                        processScannedBarcode(
-                            barcodeBuffer.value
-                        );
-            
-                    }
-            
-                    barcodeBuffer.value = '';
-            
-                    return;
-                }
-            
-                if (
-                    event.key.length === 1
-                ) {
-            
-                    barcodeBuffer.value +=
-                        event.key;
-            
-                };
-            
-            };
-
             // End Global Scanner
             // Start Dexie //
             const refreshOfflineCount = async () => {
@@ -702,40 +618,126 @@
                 };
             
             const handleKeydown = (event) => {
-                // Space: التركيز (Focus) على شريط البحث
-                if (event.code === 'Space') {
-                    // نمنع منع الافتراضي فقط إذا لم يكن المستخدم يكتب في حقل نصي
-                    if (event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
+        
+            // -----------------------
+            // Barcode Scanner
+            // -----------------------
+        
+            if (
+                event.key.length === 1 &&
+                !event.ctrlKey &&
+                !event.altKey &&
+                !event.metaKey
+            ) {
+        
+                barcodeBuffer.value += event.key;
+        
+                clearTimeout(barcodeTimeout);
+        
+                barcodeTimeout = setTimeout(() => {
+        
+                    barcodeBuffer.value = '';
+        
+                }, 100);
+        
+            }
+        
+            if (event.key === 'Enter') {
+        
+                const code = barcodeBuffer.value.trim();
+        
+                barcodeBuffer.value = '';
+        
+                if (code.length >= 6) {
+        
+                    const medicine =
+                        findMedicineByBarcode(code);
+        
+                    if (medicine) {
+        
+                        addToCart(medicine);
+        
+                        console.log(
+                            "Scanned:",
+                            medicine.name
+                        );
+        
                         event.preventDefault();
-                        document.querySelector('input[placeholder="ابحث عن دواء بالاسم أو الباركود..."]').focus();
+        
+                        return;
+        
                     }
+        
                 }
-                // Enter: إتمام الدفع (Checkout)
-                else if (
-                    event.key === 'Enter'
+        
+            }
+        
+            // -----------------------
+            // Space
+            // -----------------------
+        
+            if (event.code === 'Space') {
+        
+                if (
+                    event.target.tagName !== 'INPUT' &&
+                    event.target.tagName !== 'TEXTAREA'
                 ) {
-                
-                    if (
-                        document.activeElement ===
-                        document.body
-                    ) {
-                
-                        event.preventDefault();
-                
-                        checkout();
-                
-                    }
-                
+        
+                    event.preventDefault();
+        
+                    document
+                        .querySelector(
+                            'input[placeholder="ابحث عن دواء بالاسم أو الباركود..."]'
+                        )
+                        .focus();
+        
                 }
-                // Backspace: إفراغ السلة
-                else if (event.key === 'Backspace') {
-                    // نمنعها فقط إذا كان المستخدم لا يكتب داخل حقل نصي لتجنب حذف النص
-                    if (event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
-                        event.preventDefault();
-                        clearCart();
-                    }
+        
+            }
+        
+            // -----------------------
+            // Checkout
+            // -----------------------
+        
+            else if (
+                event.key === 'Enter'
+            ) {
+        
+                if (
+                    document.activeElement ===
+                    document.body
+                ) {
+        
+                    event.preventDefault();
+        
+                    checkout();
+        
                 }
-            };
+        
+            }
+        
+            // -----------------------
+            // Clear Cart
+            // -----------------------
+        
+            else if (
+                event.key === 'Backspace'
+            ) {
+        
+                if (
+                    event.target.tagName !== 'INPUT' &&
+                    event.target.tagName !== 'TEXTAREA'
+                ) {
+        
+                    event.preventDefault();
+        
+                    clearCart();
+        
+                }
+        
+            }
+        
+        };
             const logout = () => {
 
                 localStorage.removeItem(
