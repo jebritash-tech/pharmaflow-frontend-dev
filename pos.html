@@ -82,7 +82,7 @@
         <main class="flex-1 flex flex-col gap-6 relative">
             <div class="relative">
                 <input type="text" v-model="search" placeholder="ابحث عن دواء بالاسم أو الباركود..." 
-                    
+                        ref="searchInput"
                        class="w-full p-4 rounded-full border-2 border-emerald-500 shadow-lg outline-none text-center text-lg">
                 <div v-if="search && filteredMedicines.length > 0" class="absolute z-50 w-full bg-white border mt-2 rounded-xl shadow-2xl max-h-80 overflow-y-auto">
                     <div v-for="med in filteredMedicines" 
@@ -175,7 +175,7 @@
 
             const scanBuffer = ref('');
             
-            
+            const searchInput = ref(null);
             let barcodeTimer = null;
             const barcodeBuffer = ref('');
             let barcodeTimeout = null;
@@ -194,7 +194,15 @@
             const refundModal = ref({ show: false, sale: null, reason: '' });
             const usingCachedMedicines = ref(false);
             // Start Global Scanner
+            function focusSearch() {
+
+                nextTick(() => {
             
+                    searchInput.value?.focus();
+            
+                });
+            
+            }
             // End Global Scanner
             // Start Dexie //
             const refreshOfflineCount = async () => {
@@ -699,21 +707,12 @@
             // Checkout
             // -----------------------
         
-            else if (
-                event.key === 'Enter'
-            ) {
-        
-                if (
-                    document.activeElement ===
-                    document.body
-                ) {
-        
-                    event.preventDefault();
-        
-                    checkout();
-        
-                }
-        
+            else if (event.key === 'F9') {
+
+                event.preventDefault();
+            
+                checkout();
+            
             }
         
             // -----------------------
@@ -777,11 +776,25 @@
             }
         
             addToCart(medicine);
-        
+            search = '';
+            focusSearch();
             search.value = '';
         
         }
-
+        document.addEventListener('click', (e) => {
+        
+            if (
+                e.target.tagName !== 'INPUT' &&
+                e.target.tagName !== 'BUTTON' &&
+                e.target.tagName !== 'SELECT' &&
+                e.target.tagName !== 'TEXTAREA'
+            ) {
+        
+                focusSearch();
+        
+            }
+        
+        });
             onMounted(() => {
                 initApp();
                 window.addEventListener('keydown', handleKeydown);
@@ -789,6 +802,7 @@
                     'keydown',
                     handleBarcodeScanner
                 );
+                focusSearch();
             });
             onUnmounted(() => {
                 window.removeEventListener(
