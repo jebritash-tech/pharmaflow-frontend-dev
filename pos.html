@@ -169,7 +169,7 @@
     axios.defaults.headers.common['Accept'] = 'application/json';
     axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-    const { createApp, ref, computed, onMounted } = Vue;
+    const { createApp, ref, computed, onMounted,onUnmounted } = Vue;
     createApp({
         setup() {
             const lastInputTime = ref(0);
