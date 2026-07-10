@@ -649,6 +649,27 @@
                 );
             
             }
+
+            function processBarcode(barcode) {
+
+            const medicine =
+                findMedicineByBarcode(barcode);
+        
+            if (!medicine) {
+        
+                alert(
+                    'الباركود غير موجود'
+                );
+        
+                return;
+        
+            }
+        
+            addToCart(medicine);
+        
+            search.value = '';
+        
+        }
             return { search, cart, recentSales, cartTotal, filteredMedicines,offlineSalesCount,logout,
             isOnline, addToCart, checkout, currentUser, refundModal, showRefundModal, processRefund,clearCart, updateQuantity, removeFromCart };
         }
