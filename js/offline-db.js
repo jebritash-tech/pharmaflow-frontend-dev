@@ -1,4 +1,4 @@
-const db = new Dexie('pharmacy_db');
+const db = new Dexie('pharmacy_db_dev');
 db.version(4).stores({
 
     sales_queue: 'id,synced,created_at',
