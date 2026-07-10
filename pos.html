@@ -642,7 +642,13 @@
                 initApp();
                 window.addEventListener('keydown', handleKeydown);
             });
-
+            function findMedicineByBarcode(barcode) {
+            
+                return barcodeIndex.get(
+                    barcode.toString().trim()
+                );
+            
+            }
             return { search, cart, recentSales, cartTotal, filteredMedicines,offlineSalesCount,logout,
             isOnline, addToCart, checkout, currentUser, refundModal, showRefundModal, processRefund,clearCart, updateQuantity, removeFromCart };
         }
