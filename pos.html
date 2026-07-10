@@ -353,6 +353,21 @@
                             meds.data
                         );
 
+                        barcodeIndex.clear();
+
+                        allMedicines.value.forEach(medicine => {
+                        
+                            if (medicine.barcode) {
+                        
+                                barcodeIndex.set(
+                                    medicine.barcode.toString(),
+                                    medicine
+                                );
+                        
+                            }
+                        
+                        });
+
                         usingCachedMedicines.value =
                             false;
 
