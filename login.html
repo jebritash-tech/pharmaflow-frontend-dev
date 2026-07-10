@@ -139,7 +139,7 @@
         
                 const res =
                     await axios.post(
-                        'https://pharmaflow-api-1-1-0-beta.onrender.com/api/login',
+                        'https://pharmaflow-api-dev.onrender.com/api/login',
                         form.value
                     );
         
@@ -162,12 +162,12 @@
                 });
         
                 localStorage.setItem(
-                    'token_dev',
+                    'token',
                     res.data.token
                 );
         
                 localStorage.setItem(
-                    'user_dev',
+                    'user',
                     JSON.stringify(
                         res.data.user
                     )
@@ -201,7 +201,7 @@
 
             const sendResetLink = async () => {
                 try {
-                    await axios.post('https://pharmaflow-api-1-1-0-beta.onrender.com/api/forgot-password', { email: resetEmail.value });
+                    await axios.post('https://pharmaflow-api-dev.onrender.com/api/forgot-password', { email: resetEmail.value });
                     alert('تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني');
                     showReset.value = false;
                 } catch (e) { alert('تعذر إرسال الرابط، تأكد من البريد الإلكتروني'); }
