@@ -459,54 +459,57 @@
 
                 };
             function addToCart(medicine) {
-            
-                const existing = cart.value.find(item => item.id === medicine.id);
-            
-                if (existing) {
-            
-                    if (existing.quantity >= medicine.stock) {
-                        playSound('error');
-                        alert('الكمية المطلوبة غير متوفرة بالمخزون');
-                        
-                        focusSearch();
-            
-                        return;
-            
-                    }
-                    playSound('cart');
-                    existing.quantity++;
-                    
-                    existing.total =
-                        existing.quantity *
-                        existing.price;
-            
+
+            const existing =
+                cart.value.find(
+                    item => item.id === medicine.id
+                );
+        
+            if (existing) {
+        
+                if (existing.quantity >= medicine.stock) {
+        
+                    playSound('error');
+        
+                    alert('الكمية المطلوبة غير متوفرة بالمخزون');
+        
                     focusSearch();
-                    
+        
                     return;
-            
+        
                 }
-            
-                cart.value.push({
-            
-                    id: medicine.id,
-            
-                    name: medicine.name,
-            
-                    barcode: medicine.barcode,
-            
-                    price: Number(medicine.selling_price),
-            
-                    quantity: 1,
-            
-                    stock: Number(medicine.stock),
-            
-                    total: Number(medicine.selling_price)
-            
-                });
+        
                 playSound('cart');
+        
+                existing.quantity++;
+        
                 focusSearch();
-            
+        
+                return;
+        
             }
+        
+            cart.value.push({
+        
+                id: medicine.id,
+        
+                name: medicine.name,
+        
+                barcode: medicine.barcode,
+        
+                selling_price: Number(medicine.selling_price),
+        
+                quantity: 1,
+        
+                stock: Number(medicine.stock)
+        
+            });
+        
+            playSound('cart');
+        
+            focusSearch();
+        
+        }
 
             // دالة إفراغ السلة بالكامل
             const clearCart = () => {
@@ -836,11 +839,9 @@
                 return;
         
             const medicine =
-                medicines.value.find(m =>
-        
-                    String(m.barcode) === barcode
-        
-                );
+            allMedicines.value.find(
+                m => String(m.barcode) === barcode
+            );
         
             if (!medicine) {
         
