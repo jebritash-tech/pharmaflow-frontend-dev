@@ -196,11 +196,11 @@
             // Start Global Scanner
             function focusSearch() {
 
-                nextTick(() => {
+                if (searchInput.value) {
             
-                    searchInput.value?.focus();
+                    searchInput.value.focus();
             
-                });
+                }
             
             }
             // End Global Scanner
