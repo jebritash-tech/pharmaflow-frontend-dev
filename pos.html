@@ -242,6 +242,7 @@
                         await removeOfflineSale(
                             sale.id
                         );
+                        playSound('sync');
 
                     }
                     catch (error) {
@@ -464,7 +465,7 @@
                     if (existing.quantity >= medicine.stock) {
             
                         alert('الكمية المطلوبة غير متوفرة بالمخزون');
-            
+                        playSound('error');
                         focusSearch();
             
                         return;
@@ -539,7 +540,7 @@
                 if (cart.value.length === 0) {
 
                     alert('السلة فارغة');
-
+                    playSound('error');
                     return;
 
                 }
@@ -592,7 +593,7 @@
                     );
 
                     cart.value = [];
-
+                    playSound('success');
                     alert(
                         'تمت العملية بنجاح'
                     );
@@ -644,7 +645,7 @@
                         cart.value = [];
 
                         await refreshOfflineCount();
-
+                        playSound('success');
                         alert(
                             'تم حفظ الفاتورة محلياً وسيتم إرسالها عند عودة الاتصال'
                         );
@@ -752,7 +753,7 @@
                 event.preventDefault();
             
                 checkout();
-                playSound('success');
+                
             
             }
         
@@ -807,10 +808,11 @@
                 findMedicineByBarcode(barcode);
         
             if (!medicine) {
-        
+                playSound('error');
                 alert(
                     'الباركود غير موجود'
                 );
+                playSound('error');
         
                 return;
         
