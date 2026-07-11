@@ -272,9 +272,9 @@
             window.addEventListener(
                 'online',
                 () => {
-
+                    
                     isOnline.value = true;
-
+                    playSound('sync');
                 }
             );
 
@@ -283,6 +283,7 @@
                 () => {
 
                     isOnline.value = false;
+                    playSound('error');
 
                 }
             );
@@ -303,6 +304,7 @@
                     refundModal.value.show = false;
                     initApp(); // لتحديث قائمة المبيعات
                 } catch (e) {
+                    playSound('error');
                     alert('خطأ في الإرجاع');
                 }
             };
@@ -351,7 +353,7 @@
 
                     // لا يمكن المتابعة بدون مستخدم
                     if (!currentUser.value) {
-
+                        playSound('error');
                         alert(
                             'لا توجد بيانات مستخدم محفوظة محلياً'
                         );
@@ -463,9 +465,9 @@
                 if (existing) {
             
                     if (existing.quantity >= medicine.stock) {
-            
-                        alert('الكمية المطلوبة غير متوفرة بالمخزون');
                         playSound('error');
+                        alert('الكمية المطلوبة غير متوفرة بالمخزون');
+                        
                         focusSearch();
             
                         return;
@@ -521,6 +523,7 @@
                 if (newQty > 0 && newQty <= item.stock) {
                     item.quantity = newQty;
                 } else if (newQty > item.stock) {
+                    playSound('error');
                     alert("الكمية المطلوبة تتجاوز المتوفر في المخزن!");
                 }
             };
@@ -538,9 +541,9 @@
             const checkout = async () => {
 
                 if (cart.value.length === 0) {
-
-                    alert('السلة فارغة');
                     playSound('error');
+                    alert('السلة فارغة');
+                    
                     return;
 
                 }
@@ -552,7 +555,7 @@
                         Number(item.quantity) >
                         Number(item.stock || 0)
                     ) {
-
+                        playSound('error');
                         alert(
                             `الكمية المطلوبة من ${item.name} أكبر من المخزون المتوفر (${item.stock})`
                         );
@@ -653,9 +656,9 @@
                         return;
 
                     }
-
+                    playSound('error');
                     alert(
-
+        
                         e.response?.data?.message ||
 
                         'خطأ أثناء البيع'
@@ -812,7 +815,7 @@
                 alert(
                     'الباركود غير موجود'
                 );
-                playSound('error');
+                
         
                 return;
         
