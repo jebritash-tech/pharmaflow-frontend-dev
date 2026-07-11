@@ -510,6 +510,7 @@
 
             // دالة إفراغ السلة بالكامل
             const clearCart = () => {
+                playSound('error');
                 if(confirm('هل أنت متأكد من إلغاء الفاتورة الحالية؟')) {
                     cart.value = [];
                 }
