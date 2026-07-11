@@ -473,15 +473,15 @@
                         return;
             
                     }
-            
+                    playSound('cart');
                     existing.quantity++;
-            
+                    
                     existing.total =
                         existing.quantity *
                         existing.price;
             
                     focusSearch();
-            
+                    
                     return;
             
                 }
@@ -503,7 +503,7 @@
                     total: Number(medicine.selling_price)
             
                 });
-                
+                playSound('cart');
                 focusSearch();
             
             }
