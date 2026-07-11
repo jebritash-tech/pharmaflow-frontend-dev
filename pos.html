@@ -455,17 +455,55 @@
                 }
 
                 };
-            const addToCart = (med) => {
-                // Check if stock is 0
-                if (med.stock <= 0) {
-                    alert("تنبيه: هذا الدواء غير متوفر في المخزون حالياً!");
+            function addToCart(medicine) {
+            
+                const existing = cart.value.find(item => item.id === medicine.id);
+            
+                if (existing) {
+            
+                    if (existing.quantity >= medicine.stock) {
+            
+                        alert('الكمية المطلوبة غير متوفرة بالمخزون');
+            
+                        focusSearch();
+            
+                        return;
+            
+                    }
+            
+                    existing.quantity++;
+            
+                    existing.total =
+                        existing.quantity *
+                        existing.price;
+            
+                    focusSearch();
+            
                     return;
+            
                 }
-                
-                // Add to cart if available
-                cart.value.push({ ...med, quantity: 1 });
-                search.value = '';
-            };
+            
+                cart.value.push({
+            
+                    id: medicine.id,
+            
+                    name: medicine.name,
+            
+                    barcode: medicine.barcode,
+            
+                    price: Number(medicine.selling_price),
+            
+                    quantity: 1,
+            
+                    stock: Number(medicine.stock),
+            
+                    total: Number(medicine.selling_price)
+            
+                });
+            
+                focusSearch();
+            
+            }
 
             // دالة إفراغ السلة بالكامل
             const clearCart = () => {
