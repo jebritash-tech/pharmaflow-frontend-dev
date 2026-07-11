@@ -240,67 +240,57 @@
                 } catch (e) { alert('تعذر إرسال الرابط، تأكد من البريد الإلكتروني'); }
             };
             // Handle Offline
-            const overlay =
-                document.getElementById(
-                    'offlineOverlay'
-                );
+            onMounted(async () => {
             
-            const retry =
-                document.getElementById(
-                    'retryConnection'
-                );
-            
-            async function updateConnectionState() {
-            
-                const cachedUser =
-                    await getCachedUser();
-            
-                if (
-                    navigator.onLine
-                ) {
-            
-                    overlay.classList.add(
-                        'hidden'
+                const overlay =
+                    document.getElementById(
+                        'offlineOverlay'
                     );
             
-                    return;
+                const retry =
+                    document.getElementById(
+                        'retryConnection'
+                    );
+            
+                async function updateConnectionState() {
+            
+                    const cachedUser =
+                        await getCachedUser();
+            
+                    if (navigator.onLine || cachedUser) {
+            
+                        overlay.classList.add('hidden');
+            
+                    } else {
+            
+                        overlay.classList.remove('hidden');
+            
+                    }
             
                 }
             
-                if (
-                    cachedUser
-                ) {
+                window.addEventListener(
+                    'online',
+                    updateConnectionState
+                );
             
-                    overlay.classList.add(
-                        'hidden'
+                window.addEventListener(
+                    'offline',
+                    updateConnectionState
+                );
+            
+                if (retry) {
+            
+                    retry.addEventListener(
+                        'click',
+                        updateConnectionState
                     );
-            
-                    return;
             
                 }
             
-                overlay.classList.remove(
-                    'hidden'
-                );
+                updateConnectionState();
             
-            }
-            
-            window.addEventListener(
-                'online',
-                updateConnectionState
-            );
-            
-            window.addEventListener(
-                'offline',
-                updateConnectionState
-            );
-            
-            retry.addEventListener(
-                'click',
-                updateConnectionState
-            );
-            
-            updateConnectionState();
+            });
             return { form, login, loading, showReset, resetEmail, sendResetLink };
         }
     }).mount('#app');
