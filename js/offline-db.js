@@ -1,5 +1,5 @@
 const db = new Dexie('pharmacy_db_dev');
-db.version(4).stores({
+db.version(5).stores({
 
     sales_queue: 'id,synced,created_at',
 
