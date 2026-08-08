@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>لوحة التحكم الإدارية - PharmaFlow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <link rel="icon" href="assets/icons/icon-192.png">
+    <meta name="theme-color" content="#0b132b">
+    <script src="js/pwa.js"></script>
+</head>
+<body class="bg-slate-50 font-sans">
+
+<div id="app" class="flex h-screen overflow-hidden">
+    <!-- Offline Overlay -->
+    <div v-if="showOfflineOverlay" class="fixed inset-0 z-[999999] bg-black/70 backdrop-blur-sm flex items-center justify-center">
+        <div class="bg-white rounded-2xl shadow-2xl p-10 max-w-lg text-center">
+            <div class="mb-6">
+                <i class="fas fa-wifi text-red-600 text-7xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-red-600 mb-4">لا يوجد اتصال بالإنترنت</h1>
+            <p class="text-slate-600 text-lg mb-6">تعذر الاتصال بالشبكة. يرجى التحقق من الاتصال ثم إعادة المحاولة.</p>
+            <div class="inline-flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 px-5 py-3 rounded-lg">
+                <span class="animate-pulse">●</span> انتظار عودة الاتصال...
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar (Right side in RTL) - Styled exactly like the reference image layout -->
+    <aside class="w-72 bg-[#0b132b] text-slate-300 flex flex-col shrink-0 select-none border-l border-slate-800 h-screen">
+        <!-- User Profile & Greeting Area at Top of Sidebar matching reference image style -->
+        <div class="p-5 border-b border-slate-800/80 flex items-center justify-between gap-3 bg-[#070e22]">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold border border-sky-500/30 shrink-0">
+                    <i class="fas fa-user text-sm"></i>
+                </div>
+                <div class="overflow-hidden">
+                    <div class="text-xs text-slate-400">أهلاً بك،</div>
+                    <div class="text-sm font-bold text-white truncate">{{ adminUser?.name || 'Admin Tester' }}</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-slate-400">
+                <button class="hover:text-white transition" title="الإشعارات"><i class="fas fa-bell"></i></button>
+                <button class="hover:text-white transition" title="الرسائل"><i class="fas fa-envelope"></i></button>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+            <template v-for="tab in tabs" :key="tab.id">
+                <!-- Section Headers -->
+                <div v-if="tab.sectionHeader" class="pt-4 pb-2 px-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                    {{ tab.sectionHeader }}
+                </div>
+                
+                <button 
+                    @click="navigate(tab)"
+                    :class="[
+                        'w-full flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium relative',
+                        activeTab === tab.id 
+                            ? 'bg-sky-600 text-white shadow-md shadow-sky-600/20 font-semibold' 
+                            : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
+                    ]">
+                    <!-- Active indicator left border bar matching the screenshot style -->
+                    <span v-if="activeTab === tab.id" class="absolute left-0 top-2 bottom-2 w-1 bg-white rounded-r"></span>
+                    <i :class="[tab.icon, 'w-5 text-center text-base']"></i> 
+                    <span>{{ tab.name }}</span>
+                </button>
+            </template>
+        </nav>
+        
+        <!-- Logout Button -->
+        <div class="p-4 border-t border-slate-800/80">
+            <button
+                @click="logout"
+                class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300 transition">
+                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area (Left side in RTL, occupying remaining width without top navbar) -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+        <!-- Dynamic Module Container -->
+        <div class="p-8 flex-1">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 min-h-[500px]">
+                <component :is="currentComponent"></component>
+            </div>
+        </div>
+    </main>
+
+    <!-- Global Loading Overlay -->
+    <div id="global-loader" class="hidden fixed inset-0 z-[9999] bg-white/70 flex items-center justify-center backdrop-blur-sm">
+        <div class="flex flex-col items-center">
+            <i class="fas fa-spinner fa-spin text-5xl text-sky-600"></i>
+            <p class="mt-4 font-bold text-slate-700">جاري المعالجة...</p>
+        </div>
+    </div>
+</div>
+
+<!-- Services Scripts -->
+<script src="js/services/shift.service.js"></script>
+<script src="js/services/debt.service.js"></script>
+<script src="js/services/pricing.service.js"></script>
+<script src="js/services/medicineUnit.service.js"></script>
+<script src="js/services/medicine.service.js"></script>
+<script src="js/services/purchase.service.js"></script>
+<script src="js/services/branch.service.js"></script>
+<script src="js/services/supplier.service.js"></script>
+<script src="js/services/salaries.service.js"></script>
+<script src="js/services/inventoryService.js"></script>
+
+<!-- Module Scripts -->
+ <script src="modules/inventory/inventory.js"></script>
+  <script src="modules/expenses/expenses.js"></script>
+<script src="modules/overview/overview.js"></script>
+<script src="modules/branches/branches.js"></script>
+<script src="modules/categories/categories.js"></script>
+<script src="modules/suppliers/suppliers.js"></script>
+<script src="modules/medicines/catalog.js"></script>
+<script src="modules/medicines/purchase.js"></script>
+<script src="modules/users/users.js"></script>
+<script src="modules/shifts/shifts.js"></script>
+<script src="modules/debts/debts.js"></script>
+<script src="modules/salaries/salaries.js"></script>
+<script src="modules/pricing-engine/pricing.js"></script>
+<script src="modules/analytics/analytics.js"></script>
+
+<script src="modules/about/about.js"></script>
+
+<script>
+    const token = localStorage.getItem('token');
+    if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+
+    axios.interceptors.request.use((config) => {
+        document.getElementById('global-loader').classList.remove('hidden');
+        return config;
+    }, (error) => {
+        document.getElementById('global-loader').classList.add('hidden');
+        return Promise.reject(error);
+    });
+
+    axios.interceptors.response.use((response) => {
+        document.getElementById('global-loader').classList.add('hidden');
+        return response;
+    }, (error) => {
+        document.getElementById('global-loader').classList.add('hidden');
+        return Promise.reject(error);
+    });
+
+    const { createApp, ref, computed, onMounted, onUnmounted } = Vue;
+
+    createApp({
+        setup() {
+            const baseApi = 'https://pharmaflow-api-1.1.0-beta-main.test/api';
+            const activeTab = ref('overview');
+            
+            const tabs = [
+                { id: 'overview', name: 'الرئيسية', icon: 'fas fa-th-large' },
+                { id: 'medicine', name: 'إدارة الأدوية', icon: 'fas fa-pills', sectionHeader: 'إدارة المخزون' },
+                { id: 'purchases', name: 'إدارة المشتريات', icon: 'fas fa-shopping-cart' },
+                { id: 'shifts', name: 'الورديات', icon: 'fas fa-user-clock', sectionHeader: 'المالية' },
+                { id: 'debts', name: 'الديون', icon: 'fas fa-file-invoice-dollar' },
+                { id: 'expenses', name: 'المصروفات', icon: 'fas fa-wallet' },
+                { id: 'salaries', name: 'الرواتب', icon: 'fas fa-hand-holding-usd' },
+                { id: 'pricing', name: 'محرك الأسعار', icon: 'fas fa-dollar-sign' },
+
+                { id: 'branches', name: 'الفروع', icon: 'fas fa-code-branch', sectionHeader: 'عام' },
+                { id: 'categories', name: 'التصنيفات', icon: 'fas fa-tags' },
+                { id: 'suppliers', name: 'الموردين', icon: 'fas fa-truck' },
+                { id: 'users', name: 'المستخدمين', icon: 'fas fa-users' },
+                { id: 'analytics_link', name: 'التحليلات', icon: 'fas fa-chart-bar', sectionHeader: 'التحليلات' },
+                { id: 'stocktaking', name: 'الجرد', icon: 'fas fa-clipboard-list' },
+                { id: 'about', name: 'حول النظام', icon: 'fas fa-info-circle', sectionHeader: 'النظام والإعدادات' }
+            ];
+
+            const adminUser = ref({ name: 'Admin Tester' });
+            const showOfflineOverlay = ref(!navigator.onLine);
+
+            const updateConnectionStatus = () => {
+                showOfflineOverlay.value = !navigator.onLine;
+            };
+
+            const logout = () => {
+                localStorage.removeItem('token');
+                delete axios.defaults.headers.common['Authorization'];
+                window.location.href = 'login.html';
+            };
+
+            const navigate = async (tab) => {
+                if (tab.id === "analytics_link") {
+                    window.location.href = "analytics.html";
+                    return;
+                }
+                activeTab.value = tab.id;
+            };
+
+            const checkAuth = async () => {
+                try {
+                    const res = await axios.get(baseApi + '/current-user');
+                    if (res.data.role !== 'admin') {
+                        window.location.href = '/pos.html'; 
+                    }
+                } catch (e) {
+                    localStorage.removeItem('token');
+                    window.location.href = 'login.html';
+                }
+            };
+            
+            const initApp = async () => {
+                try {
+                    const userRes = await axios.get(baseApi + "/current-user");
+                    adminUser.value = userRes.data;
+                } catch(e) {
+                    console.error(e);
+                }
+            };
+            
+            onMounted(() => {
+                checkAuth();
+                initApp();
+                axios.get(baseApi + '/current-user')
+                    .then(res => adminUser.value = res.data)
+                    .catch(err => console.error("فشل جلب بيانات المدير"));
+                
+                updateConnectionStatus();
+                window.addEventListener('online', updateConnectionStatus);
+                window.addEventListener('offline', updateConnectionStatus);
+            });
+
+            onUnmounted(() => {
+                window.removeEventListener('online', updateConnectionStatus);
+                window.removeEventListener('offline', updateConnectionStatus);
+            });
+
+            const currentTabName = computed(() => {
+                const current = tabs.find(t => t.id === activeTab.value);
+                return current ? current.name : '';
+            });
+
+            const currentComponent = computed(() => {
+                const map = { 
+                    overview: Overview,
+                    branches: Branches,
+                    categories: Categories, 
+                    purchases: Purchases,
+                    about: About,
+                    suppliers: Suppliers,
+                    medicine: Medicine,
+                    users: Users,
+                    shifts: Shifts,
+                    debts: Debts,
+                    pricing: Pricing,
+                    analytics: Analytics,
+                    stocktaking: Inventory, // Fallback mapping for stocktaking view if component matches analytics or separate module
+                    expenses: Expenses,
+                    salaries:Salaries
+                };
+                return map[activeTab.value] || Overview;
+            });
+            
+            return { activeTab, tabs, currentTabName, currentComponent, logout, navigate, showOfflineOverlay, adminUser };
+        }
+    }).mount('#app');
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b132b">
+</body>
+</html>
