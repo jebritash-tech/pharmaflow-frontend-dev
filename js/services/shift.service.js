@@ -4,7 +4,7 @@ window.ShiftService = {
 
         const res = await axios.get(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/shifts",
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/shifts",
 
             {
 
@@ -22,7 +22,7 @@ window.ShiftService = {
 
         const res = await axios.get(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/shifts/" + id
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/shifts/" + id
 
         );
 
@@ -33,7 +33,7 @@ window.ShiftService = {
 
         const res = await axios.get(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api"  + "/shifts/" + id
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api"  + "/shifts/" + id
 
         );
 
