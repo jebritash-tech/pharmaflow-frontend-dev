@@ -6,7 +6,7 @@ const MedicineUnitService={
         
         await axios.get(
         
-        "https://pharmaflow-api-1.1.0-beta-main.test/api"+
+        "https://pharmaflow-api-2-0-0-stable.onrender.com/api"+
         
         "/medicines/"+
         
@@ -24,7 +24,7 @@ const MedicineUnitService={
     
         return axios.post(
         
-        "https://pharmaflow-api-1.1.0-beta-main.test/api"+
+        "https://pharmaflow-api-2-0-0-stable.onrender.com/api"+
         
         "/medicine-units",
         
@@ -38,7 +38,7 @@ const MedicineUnitService={
     
         return axios.put(
         
-        "https://pharmaflow-api-1.1.0-beta-main.test/api"+
+        "https://pharmaflow-api-2-0-0-stable.onrender.com/api"+
         
         "/medicine-units/"+id,
         
@@ -52,7 +52,7 @@ const MedicineUnitService={
         
         return axios.delete(
         
-        "https://pharmaflow-api-1.1.0-beta-main.test/api"+
+        "https://pharmaflow-api-2-0-0-stable.onrender.com/api"+
         
         "/medicine-units/"+id
         
