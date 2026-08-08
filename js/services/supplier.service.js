@@ -4,7 +4,7 @@ const SupplierService = {
 
         const res = await axios.get(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/suppliers"
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/suppliers"
 
         );
 
@@ -24,7 +24,7 @@ const SupplierService = {
 
         const res = await axios.get(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/suppliers/" + id
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/suppliers/" + id
 
         );
 
