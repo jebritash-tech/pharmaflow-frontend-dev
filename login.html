@@ -175,7 +175,7 @@
         
                 const res =
                     await axios.post(
-                        'https://http://pharmaflowaltelal.infy.click/api/login',
+                        'http://pharmaflowaltelal.infy.click/api/login',
                         form.value
                     );
         
@@ -239,7 +239,7 @@
 
             const sendResetLink = async () => {
                 try {
-                    await axios.post('https://http://pharmaflowaltelal.infy.click/api/forgot-password', { email: resetEmail.value });
+                    await axios.post('http://pharmaflowaltelal.infy.click/api/forgot-password', { email: resetEmail.value });
                     alert('تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني');
                     showReset.value = false;
                 } catch (e) { alert('تعذر إرسال الرابط، تأكد من البريد الإلكتروني'); }
