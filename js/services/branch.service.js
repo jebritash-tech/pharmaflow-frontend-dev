@@ -4,7 +4,7 @@ const BranchService = {
 
         const res = await axios.get(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/branches"
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/branches"
 
         );
 
@@ -24,7 +24,7 @@ const BranchService = {
 
         const res = await axios.get(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/branches/" + id
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/branches/" + id
 
         );
 
