@@ -149,7 +149,7 @@ const Suppliers = {
         const isEditing = ref(false);
 
         const fetchSuppliers = async () => {
-            const res = await axios.get('https://pharmaflow-api-1.1.0-beta-main.test/api/suppliers');
+            const res = await axios.get('https://pharmaflow-api-2-0-0-stable.onrender.com/api/suppliers');
             suppliers.value = res.data;
         };
 
@@ -157,9 +157,9 @@ const Suppliers = {
             errors.value = {}; // مسح الأخطاء السابقة
             try {
                 if (isEditing.value) {
-                    await axios.put('https://pharmaflow-api-1.1.0-beta-main.test/api/suppliers/' + form.value.id, form.value);
+                    await axios.put('https://pharmaflow-api-2-0-0-stable.onrender.com/api/suppliers/' + form.value.id, form.value);
                 } else {
-                    await axios.post('https://pharmaflow-api-1.1.0-beta-main.test/api/suppliers', form.value);
+                    await axios.post('https://pharmaflow-api-2-0-0-stable.onrender.com/api/suppliers', form.value);
                 }
                 resetForm();
                 fetchSuppliers();
@@ -187,7 +187,7 @@ const Suppliers = {
         
         const deleteSupplier = async (id) => {
             if(confirm('هل أنت متأكد؟')) {
-                await axios.delete('https://pharmaflow-api-1.1.0-beta-main.test/api/suppliers/' + id);
+                await axios.delete('https://pharmaflow-api-2-0-0-stable.onrender.com/api/suppliers/' + id);
                 fetchSuppliers();
             }
         };
