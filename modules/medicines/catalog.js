@@ -238,7 +238,7 @@ template: `
     `,
 setup() {
         const { ref,reactive,computed,watch,nextTick,onMounted } = Vue;
-        const apiBase = "https://pharmaflow-api-1.1.0-beta-main.test/api";
+        const apiBase = "https://pharmaflow-api-2-0-0-stable.onrender.com/api";
         
         const loading=ref(false);
 
