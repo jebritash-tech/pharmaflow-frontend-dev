@@ -3,7 +3,7 @@ window.ExpenseService = {
     async getAll(filters = {}) {
         return (
             await axios.get(
-                "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/expenses",
+                "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/expenses",
                 {
                     params: filters
                 }
@@ -14,7 +14,7 @@ window.ExpenseService = {
     async show(id) {
         return (
             await axios.get(
-                "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/expenses/" + id
+                "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/expenses/" + id
             )
         ).data;
     },
@@ -22,7 +22,7 @@ window.ExpenseService = {
     async create(data) {
         return (
             await axios.post(
-                "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/expenses",
+                "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/expenses",
                 data
             )
         ).data;
