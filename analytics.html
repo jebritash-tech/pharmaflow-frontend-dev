@@ -36,7 +36,11 @@
 
         <!-- Header -->
 
+<<<<<<< HEAD
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+=======
+        <div class="flex justify-between items-center mb-8">
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
 
             <div>
                 <h1 class="text-3xl font-bold">
@@ -48,6 +52,7 @@
                 </p>
             </div>
 
+<<<<<<< HEAD
             <div class="flex items-center gap-3">
                 <!-- Branch Selector -->
                 <select
@@ -67,6 +72,14 @@
                 </button>
                 <a href="admin.html" class="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition">رجوع</a>
             </div>
+=======
+            <button
+                @click="loadDashboard"
+                class="bg-blue-600 text-white px-4 py-2 ml-2 mr-2 rounded-lg">
+                تحديث
+            </button>
+            <a href="admin.html" class="bg-blue-600 text-white px-4 py-2 ml-2 mr-2 rounded-lg">رجوع</a>
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
 
         </div>
 
@@ -162,7 +175,11 @@
                     المؤشرات الرئيسية
                 </h2>
 
+<<<<<<< HEAD
                 <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-4">
+=======
+                <div class="grid md:grid-cols-3 lg:grid-cols-6 gap-4">
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
 
                     <div class="bg-white rounded-xl shadow p-4">
 
@@ -195,6 +212,7 @@
                         </div>
 
                     </div>
+<<<<<<< HEAD
                     <!-- Added Card: Weekly Sales -->
                     <div class="bg-white rounded-xl shadow p-4 border-r-4 border-purple-500">
 
@@ -261,6 +279,8 @@
                         </div>
 
                     </div>
+=======
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
 
                     <div class="bg-white rounded-xl shadow p-4">
 
@@ -603,6 +623,7 @@
             <!-- Purchase Plan -->
 
             <section class="mb-8">
+<<<<<<< HEAD
                 <div class="bg-white rounded-xl shadow p-4">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="font-bold text-lg">خطة الشراء المقترحة (ERP Replenishment)</h2>
@@ -642,6 +663,64 @@
                         </tbody>
                     </table>
                 </div>
+=======
+
+                <div class="bg-white rounded-xl shadow p-4">
+
+                    <h2 class="font-bold text-lg mb-4">
+                        خطة الشراء المقترحة
+                    </h2>
+
+                    <table class="w-full">
+
+                        <thead>
+
+                            <tr class="border-b">
+
+                                <th class="text-right py-2">
+                                    الصنف
+                                </th>
+
+                                <th class="text-right py-2">
+                                    متوسط المبيعات
+                                </th>
+
+                                <th class="text-right py-2">
+                                    المخزون الحالي
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr
+                                v-for="item in dashboard.forecast"
+                                :key="item.name"
+                                class="border-b">
+
+                                <td class="py-2">
+                                    {{ item.name }}
+                                </td>
+
+                                <td class="py-2">
+                                    {{ item.avg_daily_sales }}
+                                </td>
+
+                                <td class="py-2">
+                                    {{ item.current_stock }}
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
             </section>
 
             <!-- Recent Sales -->
@@ -719,7 +798,11 @@
             <script>
                
                 const API_URL =
+<<<<<<< HEAD
                     'https://pharmaflow-api-1.1.0-beta-main.test/api';
+=======
+                    'https://pharmaflow-api-dev.onrender.com/api';
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
 
                 const api = axios.create({
 
@@ -762,18 +845,26 @@
                 
                             dashboard:null,
                 
+<<<<<<< HEAD
                             charts:{},
 
                             branches: [],
 
                             selectedBranch: 'all'
+=======
+                            charts:{}
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
                 
                         }
                 
                     },
                 
                     async mounted() {
+<<<<<<< HEAD
                         await this.loadBranches();
+=======
+                
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
                         await this.loadDashboard();
                 
                     },
@@ -789,6 +880,7 @@
                                 .toLocaleString();
                 
                         },
+<<<<<<< HEAD
 
                         async loadBranches() {
                             try {
@@ -798,6 +890,8 @@
                                 console.error('Failed to load branches', e);
                             }
                         },
+=======
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
                 
                         async loadDashboard() {
                 
@@ -805,12 +899,27 @@
                 
                             try {
                 
+<<<<<<< HEAD
                                 const response =
                                     await api.get(
                                         '/analytics/dashboard',
                                         {
                                             params: {
                                                 branch_id: this.selectedBranch
+=======
+                                const token =
+                                localStorage.getItem('token');
+
+                                const response =
+                                    await axios.get(
+                                        API_URL + '/analytics/dashboard',
+                                        {
+                                            headers: {
+                                                Authorization:
+                                                    `Bearer ${token}`,
+                                                Accept:
+                                                    'application/json'
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
                                             }
                                         }
                                     );
@@ -1155,4 +1264,8 @@
                             </script>
 
                             </body>
+<<<<<<< HEAD
                             </html>
+=======
+                            </html>
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760

@@ -2,7 +2,11 @@ const CACHE_NAME =
     'pharmaflow-dev-v1';
 
 const BASE =
+<<<<<<< HEAD
     '';
+=======
+    '/pharmaflow-frontend-1.1.0-beta';
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
 
 const STATIC_FILES = [
 

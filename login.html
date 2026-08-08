@@ -13,7 +13,10 @@
         content="#2563eb">
     <script src="https://unpkg.com/dexie@4/dist/dexie.js"></script>
     <script src="js/offline-db.js"></script>
+<<<<<<< HEAD
     <script src="js/config.js"></script>
+=======
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
     <script src="js/pwa.js"></script>
 </head>
 <body class="bg-slate-100 flex items-center justify-center h-screen">
@@ -105,7 +108,11 @@
             const loading = ref(false);
             const showReset = ref(false);
             const resetEmail = ref('');
+<<<<<<< HEAD
             const apiBase = CONFIG.API_URL;
+=======
+
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
             const login = async () => {
 
             loading.value = true;
@@ -164,18 +171,28 @@
                     );
         
                     window.location.href =
+<<<<<<< HEAD
                     res.data.user.role=='admin'
                     ?
                     'admin.html'
                     :
                     'shift.html';
+=======
+                        user.role === 'admin'
+                            ? 'admin.html'
+                            : 'pos.html';
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
         
                     return;
                 }
         
                 const res =
                     await axios.post(
+<<<<<<< HEAD
                         'https://pharmaflow-api-1.1.0-beta-main.test/api/login',
+=======
+                        'https://pharmaflow-api-dev.onrender.com/api/login',
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
                         form.value
                     );
         
@@ -214,11 +231,17 @@
                 );
         
                 window.location.href =
+<<<<<<< HEAD
                     res.data.user.role=='admin'
                     ?
                     'admin.html'
                     :
                     'shift.html';
+=======
+                    res.data.user.role === 'admin'
+                        ? 'admin.html'
+                        : 'pos.html';
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
         
             }
             catch (e) {
@@ -239,7 +262,11 @@
 
             const sendResetLink = async () => {
                 try {
+<<<<<<< HEAD
                     await axios.post('https://pharmaflow-api-1.1.0-beta-main.test/api/forgot-password', { email: resetEmail.value });
+=======
+                    await axios.post('https://pharmaflow-api-dev.onrender.com/api/forgot-password', { email: resetEmail.value });
+>>>>>>> 800af1747ceedf07b1082399af8200b8e24b1760
                     alert('تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني');
                     showReset.value = false;
                 } catch (e) { alert('تعذر إرسال الرابط، تأكد من البريد الإلكتروني'); }
