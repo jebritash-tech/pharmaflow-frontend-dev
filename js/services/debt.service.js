@@ -6,7 +6,7 @@ window.DebtService = {
         
         await axios.get(
         
-            "https://pharmaflow-api-1.1.0-beta-main.test/api"+"/debts",
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api"+"/debts",
         
         {
         
@@ -26,7 +26,7 @@ window.DebtService = {
         
         await axios.get(
         
-            "https://pharmaflow-api-1.1.0-beta-main.test/api"+"/debts/"+id
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api"+"/debts/"+id
         
         )
         
@@ -40,7 +40,7 @@ window.DebtService = {
         
         await axios.post(
         
-            "https://pharmaflow-api-1.1.0-beta-main.test/api"+"/debts/"+id+"/payment",
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api"+"/debts/"+id+"/payment",
         
         {
         
@@ -54,7 +54,7 @@ window.DebtService = {
         
         },
         async create(data) {
-            return await axios.post("https://pharmaflow-api-1.1.0-beta-main.test/api/debts", data);
+            return await axios.post("https://pharmaflow-api-2-0-0-stable.onrender.com/api/debts", data);
         }
 
 };
