@@ -4,7 +4,7 @@ const PurchaseService = {
 
         const res = await axios.post(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/purchases",
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/purchases",
 
             payload
 
@@ -18,7 +18,7 @@ const PurchaseService = {
 
         const res = await axios.get(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/purchases",
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/purchases",
 
             {
 
@@ -44,7 +44,7 @@ const PurchaseService = {
 
         const res = await axios.get(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/purchases/" + id
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/purchases/" + id
 
         );
 
