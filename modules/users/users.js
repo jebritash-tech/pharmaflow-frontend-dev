@@ -153,19 +153,19 @@ setup() {
     const editForm = ref({ id: null, name: '', email: '', password: '', salary: '', role: 'cashier', branch_id: '' });
 
     const fetchUsers = async () => {
-        const res = await axios.get('https://pharmaflow-api-1.1.0-beta-main.test/api/users');
+        const res = await axios.get('https://pharmaflow-api-2-0-0-stable.onrender.com/api/users');
         users.value = res.data;
     };
 
     const fetchBranches = async () => {
-        const res = await axios.get('https://pharmaflow-api-1.1.0-beta-main.test/api/branches');
+        const res = await axios.get('https://pharmaflow-api-2-0-0-stable.onrender.com/api/branches');
         branches.value = res.data;
     };
 
     const saveUser = async () => {
         errors.value = {}; 
         try {
-            await axios.post('https://pharmaflow-api-1.1.0-beta-main.test/api/users', userForm.value);
+            await axios.post('https://pharmaflow-api-2-0-0-stable.onrender.com/api/users', userForm.value);
             userForm.value = { name: '', email: '', password: '', salary: '', role: 'cashier', branch_id: '' };
             fetchUsers();
             alert('تم حفظ المستخدم بنجاح');
@@ -201,7 +201,7 @@ setup() {
                 delete payload.password;
             }
 
-            await axios.put(`https://pharmaflow-api-1.1.0-beta-main.test/api/users/${editForm.value.id}`, payload);
+            await axios.put(`https://pharmaflow-api-2-0-0-stable.onrender.com/api/users/${editForm.value.id}`, payload);
             showEditModal.value = false;
             fetchUsers();
             alert('تم تحديث بيانات المستخدم بنجاح');
@@ -216,7 +216,7 @@ setup() {
 
     const deleteUser = async (id) => {
         if(confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
-            await axios.delete(`https://pharmaflow-api-1.1.0-beta-main.test/api/users/${id}`);
+            await axios.delete(`https://pharmaflow-api-2-0-0-stable.onrender.com/api/users/${id}`);
             fetchUsers();
         }
     };
