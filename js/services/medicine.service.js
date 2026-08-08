@@ -4,7 +4,7 @@ const MedicineService = {
 
         const res = await axios.get(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/medicines",
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/medicines",
 
             {
 
@@ -30,7 +30,7 @@ const MedicineService = {
 
         const res = await axios.get(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/medicines/" + id
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/medicines/" + id
 
         );
 
@@ -44,7 +44,7 @@ const MedicineService = {
 
             const res = await axios.put(
 
-                "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/medicines/" + data.id,
+                "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/medicines/" + data.id,
 
                 data
 
@@ -56,7 +56,7 @@ const MedicineService = {
 
         const res = await axios.post(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/medicines",
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/medicines",
 
             data
 
@@ -69,7 +69,7 @@ const MedicineService = {
 
         const res = await axios.put(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/medicines/" + id,
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/medicines/" + id,
 
             data
 
@@ -83,7 +83,7 @@ const MedicineService = {
 
         return axios.delete(
 
-            "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/medicines/" + id
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/medicines/" + id
 
         );
 
@@ -91,7 +91,7 @@ const MedicineService = {
 
     async getUnits(medicineId = null) {
 
-        let url = "https://pharmaflow-api-1.1.0-beta-main.test/api" + "/medicine-units";
+        let url = "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/medicine-units";
 
         if (medicineId) {
 
