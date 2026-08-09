@@ -803,102 +803,48 @@ setup() {
             }
 
         };
+        
+        
         const createMedicine = async () => {
-
-        const payload = makePayload();
-            
-            await MedicineService.save(
-
-                payload
-
-        );
-
-    };
-        const updateMedicine = async () => {
-
             const payload = makePayload();
+            await MedicineService.save(payload);
+        };
 
-            await MedicineService.update(
-
-                currentMedicineId.value,
-
-                payload
-
-            );
-
+        const updateMedicine = async () => {
+            const payload = makePayload();
+            await MedicineService.update(currentMedicineId.value, payload);
         };
         const saveMedicine = async () => {
-
             errors.value = {};
 
-            if (
-
-                !validateUnits()
-
-            )
-
-                return;
+            if (!validateUnits()) return;
 
             saving.value = true;
 
             try {
-
-                if (
-
-                    isEditing.value
-
-                ) {
-
+                if (isEditing.value) {
                     await updateMedicine();
-
-                }
-
-                else {
-
+                } else {
                     await createMedicine();
-
                 }
 
-                await loadMedicines();
+                // Immediately pull fresh data from the database
+                await loadMedicines(); 
 
                 resetForm();
 
-                alert(
+                showToast("تم حفظ الدواء بنجاح"); // Optional: use your toast system if active
 
-                "تم حفظ الدواء"
-
-                );
-
-            }
-
-            catch (e) {
-
-                if (
-
-                    e.response?.status === 422
-
-                ) {
-
-                    errors.value =
-
-                        e.response.data.errors;
-
-                }
-
-                else {
-
+            } catch (e) {
+                if (e.response?.status === 422) {
+                    errors.value = e.response.data.errors;
+                } else {
                     console.error(e);
-
+                    alert("حدث خطأ أثناء حفظ الدواء");
                 }
-
-            }
-
-            finally {
-
+            } finally {
                 saving.value = false;
-
             }
-
         };
         const resetForm = () => {
 
