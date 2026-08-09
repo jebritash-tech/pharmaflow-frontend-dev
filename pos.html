@@ -1566,18 +1566,13 @@
             const initApp = async () => {
 
                 try {
-                    await refreshShift();
-                    await syncOfflineSales();
-                    await refreshOfflineCount();
-
+                    // 1. Verify and load the current user first so the session/token is fully established
                     try {
-
                         const userRes = await axios.get(
                             `${apiBase}/current-user`
                         );
 
-                        currentUser.value =
-                            userRes.data;
+                        currentUser.value = userRes.data;
 
                         await cacheUser(
                             userRes.data
@@ -1600,6 +1595,11 @@
                         return;
 
                     }
+
+                    // 2. Now that the user/token context is confirmed, safely fetch shift and offline sync data
+                    await refreshShift();
+                    await syncOfflineSales();
+                    await refreshOfflineCount();
 
                     try {
 
@@ -1674,6 +1674,7 @@
                 }
 
             };
+            
             function addToCart(medicine, selectedPriceRecord = null) {
                 const activeBatch = medicine.batches && medicine.batches.length > 0 ? medicine.batches[0] : null;
 
