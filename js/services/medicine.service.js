@@ -38,32 +38,20 @@ const MedicineService = {
 
     },
 
-    async save(data) {
-
+ async save(data) {
         if (data.id) {
-
             const res = await axios.put(
-
-                "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/medicines/" + data.id,
-
+               "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/medicines/" + data.id,
                 data
-
             );
-
             return res.data;
-
         }
 
         const res = await axios.post(
-
-            "https://pharmaflow-api-2-0-0-stable.onrender.com/api" + "/medicines",
-
+            "https://pharmaflow-api-2-0-0-stable.onrender.com/api"  + "/medicines",
             data
-
         );
-
         return res.data;
-
     },
     async update(id, data) {
 
